@@ -11,8 +11,11 @@ public struct Shell {
 
     public struct Result {
 
+        /// The code returned by bash
         public let returnCode: Int32
+        /// Data that was written to the specified output
         public let output: [String]
+        /// Data that was written to the specified error output
         public let errorOutput: [String]
 
         init(returnCode: Int32, output: [String], errorOutput: [String]) {
@@ -42,7 +45,7 @@ public struct Shell {
         outputHandle: FileHandle? = nil,
         errorHandle: FileHandle? = nil) throws -> Result
     {
-        try process.launchBash(with: command.command, expectedReturnCode: expectedReturnCode, outputHandle: outputHandle, errorHandle: errorHandle)
+        try process.launchBash(with: command.rawCommand, expectedReturnCode: expectedReturnCode, outputHandle: outputHandle, errorHandle: errorHandle)
     }
 
 }
@@ -151,30 +154,6 @@ private extension Data {
         }
 
         return output
-    }
-
-}
-
-extension String {
-
-    var escapingSpaces: String {
-        return replacingOccurrences(of: " ", with: "\\ ")
-    }
-
-    func appending(argument: String) -> String {
-        return "\(self) \"\(argument)\""
-    }
-
-    func appending(arguments: [String]) -> String {
-        return appending(argument: arguments.joined(separator: "\" \""))
-    }
-
-    mutating func append(argument: String) {
-        self = appending(argument: argument)
-    }
-
-    mutating func append(arguments: [String]) {
-        self = appending(arguments: arguments)
     }
 
 }
