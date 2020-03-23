@@ -9,4 +9,15 @@ public extension NSError {
             userInfo: [NSLocalizedFailureErrorKey: description])
     }
 
+    func makeTerminalFormatted(boldText: Bool = false) -> String {
+        "[ERROR]"
+            .addingTerminalStyling(color: .red, decoration: boldText ? .bold : nil)
+            .appending(" \(localizedDescription)")
+    }
+
+    func printAndExit(boldText: Bool = false) -> Never {
+        print(makeTerminalFormatted(boldText: boldText))
+        exit(Int32(code))
+    }
+
 }

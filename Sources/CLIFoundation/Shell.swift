@@ -46,7 +46,9 @@ public struct Shell {
 }
 
 // MARK: - Private
+
 private extension Process {
+
     @discardableResult func launchBash(with command: String, expectedReturnCode: Int32? = nil, outputHandle: FileHandle? = nil, errorHandle: FileHandle? = nil) throws -> Shell.Result {
         launchPath = "/bin/bash"
         arguments = ["-c", command]
@@ -121,6 +123,7 @@ private extension Process {
                 errorOutput: errorData.shellOutput().components(separatedBy: .newlines))
         }
     }
+
 }
 
 private extension FileHandle {
