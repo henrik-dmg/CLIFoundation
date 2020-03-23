@@ -38,7 +38,7 @@ or through a combined convenience method:
 
 ```swift
 return "This what we want to print to the terminal"
-	.addingTerminalStyling(color: .red, backgroundColor.yellow, decoration: .bold)
+	.addingTerminalStyling(color: .red, backgroundColor: .yellow, decoration: .bold)
 ```
 
 

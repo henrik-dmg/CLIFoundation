@@ -1,14 +1,9 @@
-//
-//  File.swift
-//  
-//
-//  Created by Henrik Panhans on 20.03.20.
-//
-
 import Foundation
 
+/// A type that can be used to launch bash commands
 public struct Shell {
 
+    /// A type that holds information about the output of an executed bash command
     public struct Result {
 
         /// The code returned by bash
@@ -26,8 +21,16 @@ public struct Shell {
 
     }
 
-    @discardableResult
-    public static func execute(
+    /// Launches a shell command using bash
+    /// - Parameters:
+    ///   - command: The command to run
+    ///   - expectedReturnCode: The expected return code
+    ///   - process: Which process to use to perform the command (default: A new one)
+    ///   - outputHandle: Any `FileHandle` that any output (STDOUT) should be redirected to (at the moment this is only supported on macOS)
+    ///   - errorHandle: Any `FileHandle` that any error output (STDERR) should be redirected to (at the moment this is only supported on macOS)
+    /// - Throws: In case the command could not be run or the expected return code did not match the resulting one
+    /// - Returns: The output, error output and return code of the running command
+    @discardableResult public static func execute(
         _ command: String,
         expectedReturnCode: Int32? = nil,
         process: Process = .init(),
@@ -37,8 +40,16 @@ public struct Shell {
         try process.launchBash(with: command, expectedReturnCode: expectedReturnCode, outputHandle: outputHandle, errorHandle: errorHandle)
     }
 
-    @discardableResult
-    public static func execute(
+    /// Launches a shell command using bash
+    /// - Parameters:
+    ///   - command: The `ShellCommand` instance that will be used to run the command
+    ///   - expectedReturnCode: The expected return code
+    ///   - process: Which process to use to perform the command (default: A new one)
+    ///   - outputHandle: Any `FileHandle` that any output (STDOUT) should be redirected to (at the moment this is only supported on macOS)
+    ///   - errorHandle: Any `FileHandle` that any error output (STDERR) should be redirected to (at the moment this is only supported on macOS)
+    /// - Throws: In case the command could not be run or the expected return code did not match the resulting one
+    /// - Returns: The output, error output and return code of the running command
+    @discardableResult public static func execute(
         _ command: ShellCommand,
         expectedReturnCode: Int32? = nil,
         process: Process = .init(),

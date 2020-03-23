@@ -26,12 +26,12 @@ public extension String {
         return decoration.rawValue + self + Terminal.TextColor.default.rawValue
     }
 
-    /// <#Description#>
+    /// Adds the ANSII codes for the specified text color, background and decoration and a reset code at the end
     /// - Parameters:
-    ///   - color: <#color description#>
-    ///   - backgroundColor: <#backgroundColor description#>
-    ///   - decoration: <#decoration description#>
-    /// - Returns: <#description#>
+    ///   - color: The ANSII color that should be used to format the string
+    ///   - backgroundColor: The ANSII backgroundcolor that should be used to format the string
+    ///   - decoration: The ANSII text decoration that should be used to format the string
+    /// - Returns: A new `String` instance formatted to render with the specified text color, background and decoration in terminals
     func addingTerminalStyling(
         color: Terminal.TextColor? = nil,
         backgroundColor: Terminal.BackgroundColor? = nil,
