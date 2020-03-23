@@ -23,6 +23,7 @@ public struct Shell {
 
     }
 
+    @discardableResult
     public static func execute(
         _ command: String,
         expectedReturnCode: Int32? = nil,
@@ -33,6 +34,7 @@ public struct Shell {
         try process.launchBash(with: command, expectedReturnCode: expectedReturnCode, outputHandle: outputHandle, errorHandle: errorHandle)
     }
 
+    @discardableResult
     public static func execute(
         _ command: ShellCommand,
         expectedReturnCode: Int32? = nil,
