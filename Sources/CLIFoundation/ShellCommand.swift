@@ -4,7 +4,7 @@ import Foundation
 public struct ShellCommand {
 
     /// The raw command that will be passed to bash
-    let rawCommand: String
+    public let rawCommand: String
 
     /// Initializes a new `ShellCommand` instance
     /// - Parameter string: The base command
