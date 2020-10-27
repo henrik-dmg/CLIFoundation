@@ -13,8 +13,7 @@ final class CLIFoundationTests: XCTestCase {
         }
 
         let menu = ConsoleMenu(title: "Some fancy menu", commands: [commandOne, commandTwo])
-        menu.present()
-
+        //menu.present()
     }
     
 }

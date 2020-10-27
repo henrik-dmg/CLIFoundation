@@ -42,17 +42,17 @@ public struct ConsoleMenu {
 
 public struct ShellReader {
 
-    static func readString(prompt: String) -> String {
+    public static func readString(prompt: String) -> String {
         print(prompt)
         return readLine(strippingNewline: true) ?? ""
     }
 
-    static func readInt(prompt: String) -> Int {
+    public static func readInt(prompt: String) -> Int {
         let string = readString(prompt: prompt)
         return Int(string) ?? readInt(prompt: prompt)
     }
 
-    static func readPassword(prompt: String) -> String? {
+    public static func readPassword(prompt: String) -> String? {
         var buf = [CChar](repeating: 0, count: 8192)
         guard
             let passphrase = readpassphrase(prompt, &buf, buf.count, 0),
