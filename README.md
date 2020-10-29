@@ -45,4 +45,4 @@ return "This what we want to print to the terminal"
 
 ## Contribution
 
-I don't have a contribution and all that fancy stuff so if you want to implement changes or add new stuff, feel free to do so and just assign me the PR. Happy coding! :-)
+I don't have a contribution guide and all that fancy stuff so if you want to implement changes or add new stuff, feel free to do so and just assign me the PR. Happy coding! :-)

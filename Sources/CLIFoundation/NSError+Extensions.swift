@@ -2,7 +2,6 @@ import Foundation
 
 public extension NSError {
 
-
     /// Initializes a new `NSError` and injects the specified description into the `userInfo` dictionary
     /// - Parameters:
     ///   - domain: The error domain

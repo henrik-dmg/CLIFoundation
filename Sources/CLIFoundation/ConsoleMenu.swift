@@ -10,14 +10,14 @@ public struct ConsoleMenu {
         self.commands = commands
     }
 
-    public func present() {
+    public func present() throws {
         let menuString = buildMenuString()
         print(menuString)
         var option = -1
         while !commands.indices.contains(option - 1) {
             option = ShellReader.readInt(prompt: "Please choose an option:")
         }
-        commands[option - 1].selectionHandler()
+        try commands[option - 1].selectionHandler()
     }
 
     private func buildMenuString() -> String {
@@ -36,31 +36,6 @@ public struct ConsoleMenu {
         }
 
         return menuString
-    }
-
-}
-
-public struct ShellReader {
-
-    public static func readString(prompt: String) -> String {
-        print(prompt)
-        return readLine(strippingNewline: true) ?? ""
-    }
-
-    public static func readInt(prompt: String) -> Int {
-        let string = readString(prompt: prompt)
-        return Int(string) ?? readInt(prompt: prompt)
-    }
-
-    public static func readPassword(prompt: String) -> String? {
-        var buf = [CChar](repeating: 0, count: 8192)
-        guard
-            let passphrase = readpassphrase(prompt, &buf, buf.count, 0),
-            let passphraseString = String(validatingUTF8: passphrase)
-        else {
-            return nil
-        }
-        return passphraseString
     }
 
 }
