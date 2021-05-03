@@ -50,7 +50,7 @@ public struct Shell {
     /// - Throws: In case the command could not be run or the expected return code did not match the resulting one
     /// - Returns: The output, error output and return code of the running command
     @discardableResult public static func execute(
-        _ command: ShellCommand,
+        _ command: Command,
         expectedReturnCode: Int32? = nil,
         process: Process = .init(),
         outputHandle: FileHandle? = nil,

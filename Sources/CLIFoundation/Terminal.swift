@@ -85,7 +85,7 @@ public struct Terminal {
         case bold = "\u{001B}[1m"
         /// Underlined text
         case underline = "\u{001B}[4m"
-        /// Um
+        /// I don't know what this is supposed to do though
         case reversed = "\u{001B}[7m"
     }
 
