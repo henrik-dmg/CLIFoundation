@@ -12,14 +12,23 @@ Raw Command:
 try Shell.execute("git -C some/repo/path commit -m \"Some commit message\" --no-verify")
 ```
 
-Using `ShellCommand`:
+Using `Command`:
 
 ```swift
-let command = ShellCommand("git")
-	.appending(option: "C", value: "some/repo/path")
-	.appending(argument: "commit")
-	.appending(option: "m", value: "\"Some commit message\"")
-	.appending(flag: "no-verify")
+// new, nice way
+let command = Command("git") {
+	Option("C", value: "some/repo/path")
+	Argument("commit")
+	Option("m", value: "\"Some commit message\"")
+	Flag("no-verify")
+}
+
+// old way
+let command = Command("git")
+	.appendingOption("C", value: "some/repo/path")
+	.appendingArgument("commit")
+	.appendingOption("m", value: "\"Some commit message\"")
+	.appendingFlag("no-verify")
 try Shell.execute(command)
 ```
 
