@@ -1,7 +1,7 @@
 import Foundation
 
 /// A command component that is represents a flag, e.g. `--verbose`
-public struct Flag: CommandComponent {
+public struct CommandFlag: CommandComponent {
 
 	let name: String
 	let shouldAppend: Bool
@@ -15,7 +15,7 @@ public struct Flag: CommandComponent {
 		return useOneDash ? "-\(name)" : "--\(name)"
 	}
 
-	/// Initialises a new `Flag` instance
+	/// Initialises a new `CommandFlag` instance
 	/// - Parameters:
 	///   - name: The name of the flag. You don't need to inlcude dashes here, they will be added automatically
 	///   - shouldAppend: An optional boolean that you can use to control whether the flag should be used or not. Default is `true`.

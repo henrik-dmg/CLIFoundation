@@ -26,7 +26,7 @@ import Foundation
 
 }
 
-/// Protocol to wrap components that can be used with the CommandBuilder (`Argument`, `Option` or `Flag`)
+/// Protocol to wrap components that can be used with the CommandBuilder (`CommandArgument`, `CommandOption` or `CommandFlag`)
 public protocol CommandComponent {
 
 	/// The raw `String` representation of the component

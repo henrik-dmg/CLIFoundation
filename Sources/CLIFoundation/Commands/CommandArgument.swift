@@ -1,7 +1,7 @@
 import Foundation
 
 /// A command component that serves as an argument, e.g. a file path that's passed directly to an executable
-public struct Argument: CommandComponent {
+public struct CommandArgument: CommandComponent {
 
 	let name: String?
 
@@ -9,7 +9,7 @@ public struct Argument: CommandComponent {
 		name
 	}
 
-	/// Initialises a new `Argument` instance
+	/// Initialises a new `CommandArgument` instance
 	/// - Parameter name: the argument
 	public init(_ name: String?) {
 		self.name = name

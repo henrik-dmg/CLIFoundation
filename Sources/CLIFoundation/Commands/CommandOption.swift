@@ -1,7 +1,7 @@
 import Foundation
 
 /// A command component that is represents an option, e.g. `--theme full-width`
-public struct Option: CommandComponent {
+public struct CommandOption: CommandComponent {
 
 	let name: String
 	let value: Any?
@@ -15,7 +15,7 @@ public struct Option: CommandComponent {
 		return useOneDash ? "-\(name) \(value)" : "--\(name) \(value)"
 	}
 
-	/// Initialises a new `Flag` instance
+	/// Initialises a new `CommandOption` instance
 	/// - Parameters:
 	///   - name: The name of the flag. You don't need to inlcude dashes here, they will be added automatically
 	///   - value: The value of the flag. If the value is `nil`, the option will be ignored
