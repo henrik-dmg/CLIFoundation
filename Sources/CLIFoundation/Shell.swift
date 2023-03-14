@@ -40,6 +40,24 @@ public struct Shell {
         try process.launchBash(with: command, expectedReturnCode: expectedReturnCode, outputHandle: outputHandle, errorHandle: errorHandle)
     }
 
+    @available(macOS 10.15, *)
+    @discardableResult public static func result(
+        _ command: String,
+        expectedReturnCode: Int32? = nil,
+        process: Process = .init(),
+        outputHandle: FileHandle? = nil,
+        errorHandle: FileHandle? = nil) async throws -> Result
+    {
+        try await withCheckedThrowingContinuation { continuation in
+            do {
+                let result = try execute(command, expectedReturnCode: expectedReturnCode, process: process, outputHandle: outputHandle, errorHandle: errorHandle)
+                continuation.resume(returning: result)
+            } catch {
+                continuation.resume(throwing: error)
+            }
+        }
+    }
+
     /// Launches a shell command using bash
     /// - Parameters:
     ///   - command: The `ShellCommand` instance that will be used to run the command

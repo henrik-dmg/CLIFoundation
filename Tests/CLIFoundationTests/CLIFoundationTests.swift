@@ -23,5 +23,10 @@ final class CLIFoundationTests: XCTestCase {
 
 		XCTAssertEqual(command.rawCommand, "git -C some/repo/path commit -m \"Some commit message\" --no-verify")
 	}
+
+    func testAsyncCommand() async throws {
+        let result = try await Shell.result("ping www.google.com -c 10")
+        print(result)
+    }
     
 }
