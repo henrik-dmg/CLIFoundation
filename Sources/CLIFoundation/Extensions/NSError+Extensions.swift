@@ -1,13 +1,13 @@
 import Foundation
 
-public extension NSError {
+extension NSError {
 
     /// Initializes a new `NSError` and injects the specified description into the `userInfo` dictionary
     /// - Parameters:
     ///   - domain: The error domain
     ///   - code: The code of the occured error
     ///   - description: A textual description of the occured error
-    convenience init(domain: String = "com.henrikpanhans.CLIFoundation", code: Int = 1, description: String) {
+    convenience init(domain: String = "dev.panhans.CLIFoundation", code: Int = 1, description: String) {
         self.init(
             domain: domain,
             code: code,

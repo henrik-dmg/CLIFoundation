@@ -2,27 +2,40 @@ import Foundation
 
 @resultBuilder public struct CommandBuilder {
 
-	public static func buildBlock(_ components: CommandComponent...) -> [CommandComponent] {
-		components
-	}
+    public static func buildBlock(_ components: [CommandComponent]...) -> [CommandComponent] {
+        components.flatMap { $0 }
+    }
 
-	public static func buildEither(first component: [CommandComponent]) -> [CommandComponent] {
-		component
-	}
+    /// Add support for both single and collections of constraints.
+    public static func buildExpression(_ expression: CommandComponent) -> [CommandComponent] {
+        [expression]
+    }
 
-	public static func buildEither(second component: [CommandComponent]) -> [CommandComponent] {
-		component
-	}
+    public static func buildExpression(_ expression: [CommandComponent]) -> [CommandComponent] {
+        expression
+    }
 
-	public static func buildArray(_ components: [[CommandComponent]]) -> [CommandComponent] {
-		components.hp_reduce([CommandComponent]()) { result, element in
-			result.append(contentsOf: element)
-		}
-	}
+    /// Add support for optionals.
+    public static func buildOptional(_ components: [CommandComponent]?) -> [CommandComponent] {
+        components ?? []
+    }
 
-	public static func buildOptional(_ component: [CommandComponent]?) -> [CommandComponent] {
-		component ?? []
-	}
+    /// Add support for if statements.
+    public static func buildEither(first components: [CommandComponent]) -> [CommandComponent] {
+        components
+    }
+
+    public static func buildEither(second components: [CommandComponent]) -> [CommandComponent] {
+        components
+    }
+
+    public static func buildArray(_ components: [[CommandComponent]]) -> [CommandComponent] {
+        components.flatMap { $0 }
+    }
+
+    public static func buildLimitedAvailability(_ component: [CommandComponent]) -> [CommandComponent] {
+        component
+    }
 
 }
 
@@ -34,10 +47,10 @@ public protocol CommandComponent {
 
 }
 
-extension Array: CommandComponent where Element == CommandComponent {
+extension [CommandComponent]: CommandComponent {
 
 	public var stringRepresentation: String? {
-		self.compactMap { $0.stringRepresentation }.joined(separator: " ")
+		compactMap { $0.stringRepresentation }.joined(separator: " ")
 	}
 
 }
