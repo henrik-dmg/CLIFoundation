@@ -66,7 +66,7 @@ public struct Shell {
 private extension Process {
 
     @discardableResult func launchBash(with command: String, expectedReturnCode: Int32? = nil, outputHandle: FileHandle? = nil, errorHandle: FileHandle? = nil) throws -> Shell.Result {
-        launchPath = "/bin/bash"
+        executableURL = URL(fileURLWithPath: "/bin/bash")
         arguments = ["-c", command]
 
         // Because FileHandle's readabilityHandler might be called from a
@@ -102,7 +102,7 @@ private extension Process {
         }
         #endif
 
-        launch()
+        try run()
 
         #if os(Linux)
         outputQueue.sync {
@@ -136,7 +136,8 @@ private extension Process {
             return Shell.Result(
                 returnCode: terminationStatus,
                 output: outputData.shellOutput().components(separatedBy: .newlines),
-                errorOutput: errorData.shellOutput().components(separatedBy: .newlines))
+                errorOutput: errorData.shellOutput().components(separatedBy: .newlines)
+            )
         }
     }
 
