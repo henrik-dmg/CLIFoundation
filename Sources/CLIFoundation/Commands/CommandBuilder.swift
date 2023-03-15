@@ -42,15 +42,15 @@ import Foundation
 /// Protocol to wrap components that can be used with the CommandBuilder (`CommandArgument`, `CommandOption` or `CommandFlag`)
 public protocol CommandComponent {
 
-	/// The raw `String` representation of the component
-	var stringRepresentation: String? { get }
+    /// The raw `String` representation of the component
+    var stringRepresentation: String? { get }
 
 }
 
 extension [CommandComponent]: CommandComponent {
 
-	public var stringRepresentation: String? {
-		compactMap { $0.stringRepresentation }.joined(separator: " ")
-	}
+    public var stringRepresentation: String? {
+        compactMap { $0.stringRepresentation }.joined(separator: " ")
+    }
 
 }

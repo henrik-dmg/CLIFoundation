@@ -6,7 +6,7 @@ import PackageDescription
 let package = Package(
     name: "CLIFoundation",
     platforms: [
-        .macOS(.v10_13)
+        .macOS(.v10_15)
     ],
     products: [
         .library(name: "CLIFoundation", targets: ["CLIFoundation"])

@@ -35,22 +35,27 @@ public struct Shell {
         expectedReturnCode: Int32? = nil,
         process: Process = .init(),
         outputHandle: FileHandle? = nil,
-        errorHandle: FileHandle? = nil) throws -> Result
-    {
+        errorHandle: FileHandle? = nil
+    ) throws -> Result {
         try process.launchBash(with: command, expectedReturnCode: expectedReturnCode, outputHandle: outputHandle, errorHandle: errorHandle)
     }
 
-    @available(macOS 10.15, *)
     @discardableResult public static func result(
         _ command: String,
         expectedReturnCode: Int32? = nil,
         process: Process = .init(),
         outputHandle: FileHandle? = nil,
-        errorHandle: FileHandle? = nil) async throws -> Result
-    {
+        errorHandle: FileHandle? = nil
+    ) async throws -> Result {
         try await withCheckedThrowingContinuation { continuation in
             do {
-                let result = try execute(command, expectedReturnCode: expectedReturnCode, process: process, outputHandle: outputHandle, errorHandle: errorHandle)
+                let result = try execute(
+                    command,
+                    expectedReturnCode: expectedReturnCode,
+                    process: process,
+                    outputHandle: outputHandle,
+                    errorHandle: errorHandle
+                )
                 continuation.resume(returning: result)
             } catch {
                 continuation.resume(throwing: error)
@@ -72,8 +77,8 @@ public struct Shell {
         expectedReturnCode: Int32? = nil,
         process: Process = .init(),
         outputHandle: FileHandle? = nil,
-        errorHandle: FileHandle? = nil) throws -> Result
-    {
+        errorHandle: FileHandle? = nil
+    ) throws -> Result {
         try process.launchBash(with: command.rawCommand, expectedReturnCode: expectedReturnCode, outputHandle: outputHandle, errorHandle: errorHandle)
     }
 
@@ -81,9 +86,14 @@ public struct Shell {
 
 // MARK: - Private
 
-private extension Process {
+extension Process {
 
-    @discardableResult func launchBash(with command: String, expectedReturnCode: Int32? = nil, outputHandle: FileHandle? = nil, errorHandle: FileHandle? = nil) throws -> Shell.Result {
+    @discardableResult fileprivate func launchBash(
+        with command: String,
+        expectedReturnCode: Int32? = nil,
+        outputHandle: FileHandle? = nil,
+        errorHandle: FileHandle? = nil
+    ) throws -> Shell.Result {
         executableURL = URL(fileURLWithPath: "/bin/bash")
         arguments = ["-c", command]
 
@@ -103,30 +113,30 @@ private extension Process {
         standardError = errorPipe
 
         #if !os(Linux)
-        outputPipe.fileHandleForReading.readabilityHandler = { handler in
-            let data = handler.availableData
-            outputQueue.async {
-                outputData.append(data)
-                outputHandle?.write(data)
+            outputPipe.fileHandleForReading.readabilityHandler = { handler in
+                let data = handler.availableData
+                outputQueue.async {
+                    outputData.append(data)
+                    outputHandle?.write(data)
+                }
             }
-        }
 
-        errorPipe.fileHandleForReading.readabilityHandler = { handler in
-            let data = handler.availableData
-            outputQueue.async {
-                errorData.append(data)
-                errorHandle?.write(data)
+            errorPipe.fileHandleForReading.readabilityHandler = { handler in
+                let data = handler.availableData
+                outputQueue.async {
+                    errorData.append(data)
+                    errorHandle?.write(data)
+                }
             }
-        }
         #endif
 
         try run()
 
         #if os(Linux)
-        outputQueue.sync {
-            outputData = outputPipe.fileHandleForReading.readDataToEndOfFile()
-            errorData = errorPipe.fileHandleForReading.readDataToEndOfFile()
-        }
+            outputQueue.sync {
+                outputData = outputPipe.fileHandleForReading.readDataToEndOfFile()
+                errorData = errorPipe.fileHandleForReading.readDataToEndOfFile()
+            }
         #endif
 
         waitUntilExit()
@@ -140,8 +150,8 @@ private extension Process {
         }
 
         #if !os(Linux)
-        outputPipe.fileHandleForReading.readabilityHandler = nil
-        errorPipe.fileHandleForReading.readabilityHandler = nil
+            outputPipe.fileHandleForReading.readabilityHandler = nil
+            errorPipe.fileHandleForReading.readabilityHandler = nil
         #endif
 
         // Block until all writes have occurred to outputData and errorData,
@@ -161,19 +171,17 @@ private extension Process {
 
 }
 
-private extension FileHandle {
+extension FileHandle {
 
-    var isStandard: Bool {
-        return self === FileHandle.standardOutput ||
-            self === FileHandle.standardError ||
-            self === FileHandle.standardInput
+    fileprivate var isStandard: Bool {
+        return self === FileHandle.standardOutput || self === FileHandle.standardError || self === FileHandle.standardInput
     }
 
 }
 
-private extension Data {
+extension Data {
 
-    func shellOutput() -> String {
+    fileprivate func shellOutput() -> String {
         guard let output = String(data: self, encoding: .utf8) else {
             return ""
         }

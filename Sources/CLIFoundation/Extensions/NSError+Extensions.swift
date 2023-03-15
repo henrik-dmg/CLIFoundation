@@ -11,7 +11,8 @@ extension NSError {
         self.init(
             domain: domain,
             code: code,
-            userInfo: [NSLocalizedFailureErrorKey: description])
+            userInfo: [NSLocalizedFailureErrorKey: description]
+        )
     }
 
     /// Formats the `localizedDescription` property to be displayed in a terminal
