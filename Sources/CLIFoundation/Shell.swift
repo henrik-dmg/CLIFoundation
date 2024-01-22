@@ -3,6 +3,8 @@ import Foundation
 /// A type that can be used to launch bash commands
 public struct Shell {
 
+    // MARK: - Nested Types
+
     /// A type that holds information about the output of an executed bash command
     public struct Result {
 
@@ -20,6 +22,12 @@ public struct Shell {
         }
 
     }
+
+    enum ShellError: LocalizedError {
+        case shellError(output: String)
+    }
+
+    // MARK: - Methods
 
     /// Launches a shell command using bash
     /// - Parameters:
@@ -85,7 +93,7 @@ public struct Shell {
 
 }
 
-// MARK: - Private
+// MARK: - Process + Shell
 
 extension Process {
 
@@ -159,7 +167,7 @@ extension Process {
         // and then read the data back out.
         return try outputQueue.sync {
             if let expectedCode = expectedReturnCode, terminationStatus != expectedCode {
-                throw NSError(code: Int(terminationStatus), description: errorData.shellOutput())
+                throw Shell.ShellError.shellError(output: errorData.shellOutput())
             }
 
             return Shell.Result(
@@ -172,6 +180,8 @@ extension Process {
 
 }
 
+// MARK: - FileHandle + Extensions
+
 extension FileHandle {
 
     fileprivate var isStandard: Bool {
@@ -179,6 +189,8 @@ extension FileHandle {
     }
 
 }
+
+// MARK: - Data + Extensions
 
 extension Data {
 

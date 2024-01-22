@@ -12,6 +12,7 @@ public struct ShellReader {
         return Int(string) ?? readInt(prompt: prompt)
     }
 
+    #if os(OSX)
     public static func readPassword(prompt: String) -> String? {
         var buf = [CChar](repeating: 0, count: 8192)
         guard
@@ -22,5 +23,6 @@ public struct ShellReader {
         }
         return passphraseString
     }
+    #endif
 
 }
