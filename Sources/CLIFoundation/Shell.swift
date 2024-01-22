@@ -40,6 +40,7 @@ public struct Shell {
         try process.launchBash(with: command, expectedReturnCode: expectedReturnCode, outputHandle: outputHandle, errorHandle: errorHandle)
     }
 
+    @available(macOS 10.15, *)
     @discardableResult public static func result(
         _ command: String,
         expectedReturnCode: Int32? = nil,
