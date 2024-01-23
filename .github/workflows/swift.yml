@@ -7,9 +7,8 @@ on:
     branches: [main]
 
 jobs:
-  build:
+  test-swift:
     runs-on: macos-latest
-
     steps:
       - name: Checkout 🛎️
         uses: actions/checkout@v3
@@ -17,3 +16,35 @@ jobs:
         run: swift build -v
       - name: Run tests
         run: swift test -v
+
+  deploy-pages:
+    runs-on: macos-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    permissions:
+      pages: write # to deploy to Pages
+      id-token: write # to verify the deployment originates from an appropriate source
+    needs:
+      - test-swift
+    if: github.event_name != 'pull_request'
+    steps:
+      - name: Checkout 🛎️
+        uses: actions/checkout@v3
+      - name: Build DocC
+        run: |
+          swift package --allow-writing-to-directory ./docs \
+            generate-documentation --target CLIFoundation \
+            --transform-for-static-hosting \
+            --hosting-base-path CLIFoundation \
+            --output-path ./docs
+      - name: Fix Root Path
+        run: echo "<script>window.location.href += \"documentation/clifoundation\"</script>" > docs/index.html
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v1
+        with:
+          # Upload only docs directory
+          path: "docs"
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
