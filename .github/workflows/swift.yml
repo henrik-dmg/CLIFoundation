@@ -37,13 +37,15 @@ jobs:
         uses: actions/checkout@v3
       - name: Build DocC
         run: |
-          swift package --allow-writing-to-directory ./docs \
-            generate-documentation --target CLIFoundation \
+          swift package \
+            --allow-writing-to-directory "$RUNNER_TEMP/docs" \
+            generate-documentation \
+            --target CLIFoundation \
             --transform-for-static-hosting \
             --hosting-base-path CLIFoundation \
             --output-path "$RUNNER_TEMP/docs"
       - name: Fix Root Path
-        run: echo "<script>window.location.href += \"documentation/clifoundation\"</script>" > docs/index.html
+        run: echo "<script>window.location.href += \"documentation/clifoundation\"</script>" > "$RUNNER_TEMP/docs/index.html"
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
