@@ -8,7 +8,11 @@ on:
 
 jobs:
   test-swift:
-    runs-on: macos-latest
+    name: Test Swift on ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macos-latest]
     steps:
       - name: Checkout 🛎️
         uses: actions/checkout@v3
@@ -37,14 +41,13 @@ jobs:
             generate-documentation --target CLIFoundation \
             --transform-for-static-hosting \
             --hosting-base-path CLIFoundation \
-            --output-path ./docs
+            --output-path "$RUNNER_TEMP/docs"
       - name: Fix Root Path
         run: echo "<script>window.location.href += \"documentation/clifoundation\"</script>" > docs/index.html
       - name: Upload artifact
-        uses: actions/upload-pages-artifact@v1
+        uses: actions/upload-pages-artifact@v3
         with:
-          # Upload only docs directory
-          path: "docs"
+          path: ${{ runner.temp }}/docs
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
